@@ -22,7 +22,8 @@ El programa solo tiene una restricción: _el número de páginas debe ser múlti
 Se ejecuta usando python, seguido del nombre del script, y se le pasa como parámetro el número de páginas del documento.
 
 
-`$ python numero-folleto.py 400
+```
+$ python numero-folleto.py 400
 
  > INICIANDO...
 
@@ -33,7 +34,7 @@ Se ejecuta usando python, seguido del nombre del script, y se le pasa como pará
  >> Copie y pegue el orden de las páginas
     anterior para imprimir estilo folleto. 
 
-`
+```
 
 
 
