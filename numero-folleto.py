@@ -2,60 +2,110 @@
 
 '''
 @param : Recibe el número n de páginas (multiplo de 4).
-@Sumary: Este programa crea el orden en que las páginas 
+@Sumary: Este programa crea el orden en que las páginas
          deben ser impresas, según el número de páginas
-         n del documento pdf.  
+         n del documento pdf.
 '''
 
 import sys
 
 
+def ordenar_cuad(lista_cuad):
+    '''ordena cada una de las sublistas en el orden correcto
+    para que los cuadernillos queden como folletos.'''
+    for index in range(len(lista_cuad)):
+        old = lista_cuad.pop(index)
+        new = []
+        while len(old) > 0:
+            new.append(old.pop())
+            new.append(old.pop(0))
+            new.append(old.pop(0))
+            new.append(old.pop())
+
+        lista_cuad.insert(index, new)
+
+    return lista_cuad
 
 
+def gestor_cuadernillos(n, blanco, pags_por_cuad=20):
+    '''Gestiona la realización de los cuadernillos
+    para el cosido del libro.'''
 
-def ordenar_paginas(n):
-	'''Recibe el número de páginas a ordenar''' 
-	
-	string_ordenado=''
+    def grupo(pag_cuad, lista, index):
+        if len(lista) == pag_cuad:
+            print lista, pag_cuad
+            return list(lista)
+        else:
+            return grupo(pag_cuad, lista + [(numero_pag(index))], index + 1)
 
-	# m:número de holas. 
-	for m in range(n/4):
-		#Cada hoja tiene 2 caras
-		m=m*2 
-		
-		# a..d: son páginas.
-		# reglas de ordenamiento (Es mágia, no tocar :P ) 
-		a, b, c, d = n-m, m+1, m+2, n-m-1
-		
-		#Se junta todas las páginas separadas por comas.
-		string_ordenado = string_ordenado + str(a) +','+ str(b)+ ','+ str(c) +','+ str(d) +',';
-	
-	return string_ordenado[:-1]
+    def numero_pag(index):
+        # [----|--.....---|----]
+        if (index <= 4) or (index > n + 4):
+            return blanco
+        else:
+            return index - 4
 
+    def generador(num_cuad, pags_por_cuad, residuo):
+        new = list()
+        index = 1
+        while num_cuad > 0:
+            aux = list()
+            if residuo == 0:
+                aux = grupo(pags_por_cuad, list(), index)
+                new.append(aux)
+                index += pags_por_cuad
+            else:
+                aux = grupo(pags_por_cuad + 4, list(), index)
+                new.append(aux)
+                index += (pags_por_cuad + 4)
+                residuo -= 1
+            num_cuad -= 1
+        return new
+
+    while True:
+        if ((n + 8) % pags_por_cuad) > ((n + 8) / pags_por_cuad):
+            pags_por_cuad += 4
+            #multiplos de 4
+        else:
+            break
+
+    #El residuo siempre será una hoja (4 paginas)
+    residuo = ((n + 8) % pags_por_cuad) / 4
+    num_cuad = (n + 8) / pags_por_cuad
+
+    cuadernillos = generador(num_cuad, pags_por_cuad, residuo)
+    return ordenar_cuad(cuadernillos)
+
+
+def print_list(lista):
+    txt = ""
+    for i in lista:
+        for j in i:
+            txt = txt + str(j) + ","
+    print txt[:-1]
 
 
 def main():
-	'''Main del programa.'''
+    '''Main del programa.'''
 
-	#Si no hay argumentos, Termina.
-	try:
-		n = int(sys.argv[1])
-	except:
-		print("\n\n  >> ERROR!: Debe colocar el número de páginas.\n\n")
-		sys.exit(1)
-	
-	
-	#El n debe ser multiplo de 4.
-	if n%4==0 :
-		print("\n > INICIANDO...\n\n")
-		print( ordenar_paginas(n) )
-		print("\n\n >> Copie y pegue el orden de las páginas\n    anterior para imprimir estilo folleto. \n\n")
-		sys.exit(0)
-    
-	else:
-		print("\n\n  >> ERROR!: el número de páginas debe ser múltiplo de 4.\n\n")
-		sys.exit(1)
+    #Si no hay argumentos, Pregunta las páginas.
+    try:
+        n = int(sys.argv[1])
+    except:
+        n = input("→ Escriba el número de páginas: ")
+        blanco = input("\n→ Escriba el número de alguna página en blanco: ")
 
+    #El n debe ser multiplo de 4.
+    if n % 4 == 0:
+        print("\n > INICIANDO...\n\n")
+
+        tmp = gestor_cuadernillos(n, blanco)
+        print_list(tmp)
+        sys.exit(0)
+
+    else:
+        print("\n\n  >> ERROR!: el número de páginas debe ser múltiplo de 4.\n\n")
+        sys.exit(1)
 
 
 main()

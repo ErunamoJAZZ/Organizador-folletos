@@ -19,7 +19,14 @@ El programa solo tiene una restricción: _el número de páginas debe ser múlti
 
 ## Modo de uso
 
-Se ejecuta usando python, seguido del nombre del script, y se le pasa como parámetro el número de páginas del documento.
+### Update
+Se sigue ejecutando con python. Ahora pregunta el número de páginas y el número de una página en blanco.
+Lo que que hace es poner 4 páginas en blanco al inicio y al final, y divide el total de páginas cuadernillos de a 20 páginas (realmente se adaptará segun sea necesario).
+
+Es un poco más complejo, pero permite hacer libros que pueden coserse de forma común.
+
+### Modo obsoleto
+Se ejecutaba usando python, seguido del nombre del script, y se le pasa como parámetro el número de páginas del documento.
 
 
 ```
