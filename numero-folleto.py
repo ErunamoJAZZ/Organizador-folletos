@@ -32,6 +32,8 @@ def gestor_cuadernillos(n, blanco, pags_por_cuad=20):
     para el cosido del libro.'''
 
     def grupo(pag_cuad, lista, index):
+    '''Va creando grupos de cuadernillos y 
+    devualve la lista ya armada.'''
         if len(lista) == pag_cuad:
             print lista, pag_cuad
             return list(lista)
@@ -39,6 +41,10 @@ def gestor_cuadernillos(n, blanco, pags_por_cuad=20):
             return grupo(pag_cuad, lista + [(numero_pag(index))], index + 1)
 
     def numero_pag(index):
+    '''Va generando de forma iterativa la numeración
+    exacta para el libro, dejando 4 páginas al inicio
+    y al final para no dañar el libro con las futuras
+    "guardas" (cartulina entre la pasta y el libro).'''
         # [----|--.....---|----]
         if (index <= 4) or (index > n + 4):
             return blanco
@@ -46,6 +52,8 @@ def gestor_cuadernillos(n, blanco, pags_por_cuad=20):
             return index - 4
 
     def generador(num_cuad, pags_por_cuad, residuo):
+    '''Genera una lista de listas de cuadernillos, 
+    todos en el orden correcto para su impresión.'''
         new = list()
         index = 1
         while num_cuad > 0:
@@ -62,6 +70,7 @@ def gestor_cuadernillos(n, blanco, pags_por_cuad=20):
             num_cuad -= 1
         return new
 
+    #Calcula bien cuantas hojas debe tener cada cuadernillo.
     while True:
         if ((n + 8) % pags_por_cuad) > ((n + 8) / pags_por_cuad):
             pags_por_cuad += 4
@@ -78,6 +87,7 @@ def gestor_cuadernillos(n, blanco, pags_por_cuad=20):
 
 
 def print_list(lista):
+   '''imprimer la lista ta y como debe copiarse en Evince.'''
     txt = ""
     for i in lista:
         for j in i:
